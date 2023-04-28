@@ -80,7 +80,9 @@ async function makeGalery(searchQuery) {
       );
       loadMoreBtn.style.display = 'none';
       return;
-    }else{Notiflix.Notify.success('Hooray! We found totalHits images.');}
+    }else{Notiflix.Notify.success(
+      `Hooray! We found ${listPhoto.data.totalHits} images.`
+    );}
   }
   console.log(listPhoto);
   console.log(listPhoto.data.hits);
