@@ -1,18 +1,15 @@
 import './css/styles.css';
 import axios from 'axios';
 import Notiflix from 'notiflix';
-import SimpleLightbox from 'simplelightbox';
+// import SimpleLightbox from 'simplelightbox';
 // import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const BASE_URL = 'https://pixabay.com/api/';
 const My_API_key = '35792081-ad86e3eac8072124d950161bb';
 
-// const searchBtn = document.getElementsByName('submit');
 const searchForm = document.querySelector('.search-form');
 const loadMoreBtn = document.querySelector('.load-more');
 const containerMarkUp = document.querySelector('.gallery');
-
-// console.dir(searchBtn);
 
 let searchQuery = '';
 let pageNumber = 1;
@@ -37,47 +34,8 @@ async function onSearchPhotos(evt) {
   evt.preventDefault();
   resetMarkup();
   pageNumber = 1;
-
   searchQuery = evt.currentTarget.elements.searchQuery.value.trim();
-  console.log(searchQuery);
-  //   console.log(evt.currentTarget.elements);
-  // if (searchQuery='') {
-  //   evt.currentTarget.elements.button.disable = 'true';
-  // }else evt.currentTarget.elements.button.disable = 'false';
-  // // const currentPage
-  // const options = new URLSearchParams({
-  //   key: My_API_key,
-  //   q: searchQuery,
-  //   image_type: 'photo',
-  //   orientation: 'horizontal',
-  //   safesearch: true,
-  //   page: pageNumber,
-  //   per_page: 40,
-  // });
-  // const url = BASE_URL + `?` + options.toString();
-  // craeteSearchOptions(searchQuery);
-  console.log(url);
-
   makeGalery(searchQuery);
-  // const listPhoto = await getPhoto(craeteSearchOptions(searchQuery));
-  // console.log(listPhoto.data);
-  // if (listPhoto.data.total === 0) {
-  //   Notiflix.Notify.failure(
-  //     'Sorry, there are no images matching your search query. Please try again.'
-  //   );
-  //   loadMoreBtn.style.display = 'none';
-  //   return;
-  // } else { if (pageNumber === Math.ceil(listPhoto.data.total / 40)) {Notiflix.Notify.failure(
-  //   "We're sorry, but you've reached the end of search results."
-  // );
-  //     loadMoreBtn.style.display = 'none';
-  // }
-
-  // }
-  // console.log(listPhoto);
-  // console.log(listPhoto.data.hits);
-  // CreateMarkUp(listPhoto.data.hits);
-  // loadMoreBtn.style.display = '';
 }
 
 async function makeGalery(searchQuery) {
@@ -103,31 +61,28 @@ async function makeGalery(searchQuery) {
       );
     }
   }
-  console.log(listPhoto);
-  console.log(listPhoto.data.hits);
+  // console.log(listPhoto);
+  // console.log(listPhoto.data.hits);
   CreateMarkUp(listPhoto.data.hits);
 
-  const lightbox = new SimpleLightbox('.gallery a', {
-    // captionsData: 'alt',
-    // overlay: true,
-    // overlayOpacity:0.7,
-    captionPosition: 'bottom',
-    captionDelay: 250,
-  });
+  // const lightbox = new SimpleLightbox('.gallery a', {
+  //   // captionsData: 'alt',
+  //   // overlay: true,
+  //   // overlayOpacity:0.7,
+  //   captionPosition: 'bottom',
+  //   captionDelay: 250,
+  // });
 }
 
 async function getPhoto(URL) {
   try {
     const response = await axios.get(URL);
-    // console.log(response);
     return response;
   } catch (error) {
     Notiflix.Notify.failure(error);
   }
 }
 function craeteSearchOptions(searchQuery) {
-  // const searchQuery = e.currentTarget.elements.searchQuery.value;
-  // const currentPage
   const options = new URLSearchParams({
     key: My_API_key,
     q: searchQuery,
@@ -154,8 +109,6 @@ function onLoadMore(evt) {
 
 function CreateMarkUp(images) {
   const markup = images.map(image => markupPhotos(image));
-
-  //   containerMarkUp.insertAdjacentHTML('beforeend', markup);
 }
 
 function markupPhotos({
@@ -202,16 +155,3 @@ function resetMarkup() {
 //   captionDelay: 250,
 // });
 
-// function markUpOneCountry({ name, capital, population, flags, languages }) {
-//   const markupItemOne = `
-//     <div class="list-propertises">
-//         <span class="name-official"><img src='${flags.svg}'alt='${
-//     flags.alt
-//   }' width="50"></img>  ${name.official}</span>
-//         <span >Capital: ${capital[0]}</span>
-//         <span>Population: ${population}</span>
-//         <span>Languages: ${Object.values(languages).join(', ')}</span>
-//   </div>
-//     `;
-//   countryInfo.innerHTML = markupItemOne;
-// }
