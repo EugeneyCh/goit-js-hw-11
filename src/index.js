@@ -2,7 +2,7 @@ import './css/styles.css';
 import axios from 'axios';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
-// import 'simplelightbox/dist/simple-lightbox.min.css';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const BASE_URL = 'https://pixabay.com/api/';
 const My_API_key = '35792081-ad86e3eac8072124d950161bb';
@@ -16,6 +16,7 @@ let pageNumber = 1;
 let url = '';
 loadMoreBtn.style.display = 'none';
 searchForm[1].disabled = true;
+let gallery = '';
 
 searchForm.addEventListener('submit', onSearchPhotos);
 loadMoreBtn.addEventListener('click', onLoadMore);
@@ -61,14 +62,9 @@ async function makeGalery(searchQuery) {
     }
   }
   CreateMarkUp(listPhoto.data.hits);
-
-  // const lightbox = new SimpleLightbox('.gallery a', {
-  //   // captionsData: 'alt',
-  //   // overlay: true,
-  //   // overlayOpacity:0.7,
-  //   captionPosition: 'bottom',
-  //   captionDelay: 250,
-  // });
+  loadMoreBtn.style.display = '';
+  gallery = new SimpleLightbox('.gallery a');
+  gallery.on('show.simplelightbox');
 }
 
 async function getPhoto(URL) {
@@ -94,12 +90,9 @@ function craeteSearchOptions(searchQuery) {
 }
 
 function onLoadMore(evt) {
-  console.log(pageNumber);
   pageNumber += 1;
   makeGalery(searchQuery);
-  // const gallery = $('.gallery a').simpleLightbox();
-  // console.log(gallery);
-  // gallery.refresh();
+  gallery.refresh();
 }
 
 function CreateMarkUp(images) {
@@ -142,13 +135,3 @@ function markupPhotos({
 function resetMarkup() {
   containerMarkUp.innerHTML = '';
 }
-
-
-// const lightbox = new SimpleLightbox('.gallery a', {
-//   // captionsData: 'alt',
-//   overlay: true,
-//   overlayOpacity:0.7,
-//   captionPosition: 'bottom',
-//   captionDelay: 250,
-// });
-

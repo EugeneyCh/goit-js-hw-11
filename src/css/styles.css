@@ -15,11 +15,10 @@ body {
 #search-form {
   display: flex;
   justify-content: center;
-  /* align-items: center; */
   font: inherit;
-  padding: 8px;
+  padding: 20px 8px;
   min-width: 420px;
-  /* margin-bottom: 16px; */
+  margin-bottom: 16px;
 }
 
 .gallery {
@@ -28,7 +27,6 @@ body {
   max-width: 1200px;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-gap: 10px;
-  /* justify-content: center; */
   margin-left: auto;
   margin-right: auto;
 }
