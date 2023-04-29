@@ -1,7 +1,7 @@
 import './css/styles.css';
 import axios from 'axios';
 import Notiflix from 'notiflix';
-// import SimpleLightbox from 'simplelightbox';
+import SimpleLightbox from 'simplelightbox';
 // import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const BASE_URL = 'https://pixabay.com/api/';
@@ -41,7 +41,6 @@ async function onSearchPhotos(evt) {
 async function makeGalery(searchQuery) {
   const url = craeteSearchOptions(searchQuery);
   const listPhoto = await getPhoto(url);
-  console.log(listPhoto.data);
   if (listPhoto.data.total === 0) {
     Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
@@ -61,8 +60,6 @@ async function makeGalery(searchQuery) {
       );
     }
   }
-  // console.log(listPhoto);
-  // console.log(listPhoto.data.hits);
   CreateMarkUp(listPhoto.data.hits);
 
   // const lightbox = new SimpleLightbox('.gallery a', {
@@ -93,14 +90,12 @@ function craeteSearchOptions(searchQuery) {
     per_page: 40,
   });
   const url = BASE_URL + `?` + options.toString();
-  console.log(url);
   return url;
 }
 
 function onLoadMore(evt) {
   console.log(pageNumber);
   pageNumber += 1;
-  console.log(evt.currentTarget);
   makeGalery(searchQuery);
   // const gallery = $('.gallery a').simpleLightbox();
   // console.log(gallery);
@@ -147,6 +142,8 @@ function markupPhotos({
 function resetMarkup() {
   containerMarkUp.innerHTML = '';
 }
+
+
 // const lightbox = new SimpleLightbox('.gallery a', {
 //   // captionsData: 'alt',
 //   overlay: true,
