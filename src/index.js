@@ -1,32 +1,49 @@
 import './css/styles.css';
 import axios from 'axios';
 import Notiflix from 'notiflix';
-// import SimpleLightbox from 'simplelightbox';
+import SimpleLightbox from 'simplelightbox';
 // import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const BASE_URL = 'https://pixabay.com/api/';
 const My_API_key = '35792081-ad86e3eac8072124d950161bb';
 
-// const searchBox = document.getElementsByName('searchQuery');
+// const searchBtn = document.getElementsByName('submit');
 const searchForm = document.querySelector('.search-form');
 const loadMoreBtn = document.querySelector('.load-more');
 const containerMarkUp = document.querySelector('.gallery');
+
+// console.dir(searchBtn);
 
 let searchQuery = '';
 let pageNumber = 1;
 let url = '';
 loadMoreBtn.style.display = 'none';
+searchForm[1].disabled = true;
 
 searchForm.addEventListener('submit', onSearchPhotos);
 loadMoreBtn.addEventListener('click', onLoadMore);
+searchForm.addEventListener('input', checkInput);
+
+function checkInput(e) {
+  const inputPlace = e.currentTarget.elements[0].value.trim();
+  if (inputPlace.length === 0) {
+    searchForm[1].disabled = true;
+  } else {
+    searchForm[1].disabled = false;
+  }
+}
 
 async function onSearchPhotos(evt) {
   evt.preventDefault();
   resetMarkup();
-pageNumber = 1;
+  pageNumber = 1;
 
- searchQuery = evt.currentTarget.elements.searchQuery.value;
-
+  searchQuery = evt.currentTarget.elements.searchQuery.value.trim();
+  console.log(searchQuery);
+  //   console.log(evt.currentTarget.elements);
+  // if (searchQuery='') {
+  //   evt.currentTarget.elements.button.disable = 'true';
+  // }else evt.currentTarget.elements.button.disable = 'false';
   // // const currentPage
   // const options = new URLSearchParams({
   //   key: My_API_key,
@@ -80,14 +97,23 @@ async function makeGalery(searchQuery) {
       );
       loadMoreBtn.style.display = 'none';
       return;
-    }else{Notiflix.Notify.success(
-      `Hooray! We found ${listPhoto.data.totalHits} images.`
-    );}
+    } else {
+      Notiflix.Notify.success(
+        `Hooray! We found ${listPhoto.data.totalHits} images.`
+      );
+    }
   }
   console.log(listPhoto);
   console.log(listPhoto.data.hits);
   CreateMarkUp(listPhoto.data.hits);
-  loadMoreBtn.style.display = '';
+
+  const lightbox = new SimpleLightbox('.gallery a', {
+    // captionsData: 'alt',
+    // overlay: true,
+    // overlayOpacity:0.7,
+    captionPosition: 'bottom',
+    captionDelay: 250,
+  });
 }
 
 async function getPhoto(URL) {
@@ -121,10 +147,14 @@ function onLoadMore(evt) {
   pageNumber += 1;
   console.log(evt.currentTarget);
   makeGalery(searchQuery);
+  // const gallery = $('.gallery a').simpleLightbox();
+  // console.log(gallery);
+  // gallery.refresh();
 }
 
 function CreateMarkUp(images) {
   const markup = images.map(image => markupPhotos(image));
+
   //   containerMarkUp.insertAdjacentHTML('beforeend', markup);
 }
 
@@ -140,7 +170,7 @@ function markupPhotos({
   const markupItem = `
     <div class="photo-card">
   <a class="galery_link" href="${largeImageURL}">
-  <img src="${previewURL}" alt="${tags}" width="320" loading="lazy" />
+  <img class="galery_image" src="${previewURL}" alt="${tags}" width="320" loading="lazy" />
   <div class="info">
     <p class="info-item">
       <b>Likes</b>${likes}
